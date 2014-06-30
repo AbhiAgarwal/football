@@ -80,5 +80,5 @@ def getJSON(matchesArray):
 if __name__ == '__main__':
     matchesArray = getData()
     jsonData = getJSON(matchesArray)
-    fullData = json.dumps(jsonData)
+    fullData = json.dumps(jsonData, ensure_ascii=False, encoding='utf8')
     print fullData
