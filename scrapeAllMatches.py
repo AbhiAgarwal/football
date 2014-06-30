@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup
-import urllib2
+import urllib2, json
+
+futureYear = 2014 + 4
 
 class Matches:
     def __init__(self, year, time, venue, stage, teamOne, result, teamTwo):
@@ -11,14 +13,81 @@ class Matches:
         self.result = result
         self.teamTwo = teamTwo
     def printString(self):
-        print self.time, self.venue, self.stage, self.teamOne, self.result, self.teamTwo
+        print self.year, self.time, self.venue, self.stage, self.teamOne, self.result, self.teamTwo
+
+# From 1990 -> 2006 the tables are different
+def get2010PreData():
+    matchesArray = []
+    url = "http://en.wikipedia.org/wiki/List_of_%s_FIFA_World_Cup_matches"
+    currentYear = 1990
+    limitYear = 2010
+    while currentYear != limitYear:
+        soup = BeautifulSoup(urllib2.urlopen(url % str(currentYear)).read())
+        currentStage = ""
+        for row in soup.findAll('table')[0].findAll('tr'):
+            cells = row.findAll('td')
+            if len(cells) == 5:
+                # Time
+                time = cells[0].find(text = True)
+                # Venue
+                venue = ''
+                # Stage
+                if cells[1].find('a'):
+                    stage = cells[1].find('a')(text = True)[0]
+                else:
+                    stage = cells[1].find(text = True)
+                currentStage = stage
+                # Team 1
+                if cells[2].find('a'):
+                    teamOne = cells[2].find('a')(text = True)[0]
+                else:
+                    teamOne = cells[2].find(text = True)
+                # Result
+                if cells[3].find('a'):
+                    result = cells[3].find('a')(text = True)[0]
+                else:
+                    result = cells[3].find(text = True)
+                # Team 2
+                if cells[4].find('a'):
+                    teamTwo = cells[4].find('a')(text = True)[0]
+                else:
+                    teamTwo = cells[4].find(text = True)
+                newMatch = Matches(currentYear, time, venue, stage, teamOne, result, teamTwo)
+                matchesArray.append(newMatch)
+            elif len(cells) == 4:
+                # Time
+                time = cells[0].find(text = True)
+                # Venue
+                venue = ''
+                # Team 1
+                if cells[1].find('a'):
+                    teamOne = cells[1].find('a')(text = True)[0]
+                else:
+                    teamOne = cells[1].find(text = True)
+                # Result
+                if cells[2].find('a'):
+                    result = cells[2].find('a')(text = True)[0]
+                else:
+                    result = cells[2].find(text = True)
+                # Team 2
+                if cells[3].find('a'):
+                    teamTwo = cells[3].find('a')(text = True)[0]
+                else:
+                    teamTwo = cells[3].find(text = True)
+                # Stage
+                stage = currentStage
+                newMatch = Matches(currentYear, time, venue, stage, teamOne, result, teamTwo)
+                matchesArray.append(newMatch)
+        print "Year", currentYear, "Scraped"
+        currentYear += 4
+    return matchesArray
 
 # From 2010 -> 2014 the tables are different
-def getData():
+def get2010PostData():
     matchesArray = []
     url = "http://en.wikipedia.org/wiki/List_of_%s_FIFA_World_Cup_matches"
     currentYear = 2010
-    while currentYear != 2018:
+    while currentYear != futureYear:
         soup = BeautifulSoup(urllib2.urlopen(url % str(currentYear)).read())
         currentStage = ""
         for row in soup.findAll('table')[0].findAll('tr'):
@@ -81,11 +150,30 @@ def getData():
                 stage = currentStage
                 newMatch = Matches(currentYear, time, venue, stage, teamOne, result, teamTwo)
                 matchesArray.append(newMatch)
-        currentYear += 4
         print "Year", currentYear, "Scraped"
+        currentYear += 4
     return matchesArray
 
-if __name__ == '__main__':
-    matchesArray = getData()
+def getJSON(matchesArray):
+    fullJSON = []
     for i in matchesArray:
-        i.printString()
+        fullJSON.append({
+            'Year': i.year,
+            'Time': i.time,
+            'Venue': i.venue,
+            'Stage': i.stage,
+            'Team 1': i.teamOne,
+            'Result': i.result,
+            'Team 2': i.teamTwo
+        })
+    return fullJSON
+
+if __name__ == '__main__':
+    matchesArray = get2010PreData()
+    matchesArray += get2010PostData()
+    jsonData = getJSON(matchesArray)
+    fullData = json.dumps(jsonData, ensure_ascii=False, encoding='utf8')
+    # write json
+    fd = open('./data/worldCupMatches.json', 'w')
+    fd.write(fullData.encode('utf-8'))
+    fd.close()
