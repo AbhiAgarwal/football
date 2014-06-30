@@ -23,47 +23,27 @@ def getData():
         cells = row.findAll('td')
         if len(cells) == 7:
             # Winner
-            if cells[0].find('a'):
-                winner = cells[0].find('a')(text = True)[0]
-            else:
-                winner = cells[0].find(text = True)
+            winner = cells[0].find('a')(text = True)[0] if cells[0].find('a') else cells[0].find(text = True)
             # Final Score
-            if cells[1].find('a'):
-                finalScore = cells[1].find('a')(text = True)[0]
-            else:
-                finalScore = cells[1].find(text = True)
+            finalScore = cells[1].find('a')(text = True)[0] if cells[1].find('a') else cells[1].find(text = True)
             # Runners-up
-            if cells[2].find('a'):
-                runnerUp = cells[2].find('a')(text = True)[0]
-            else:
-                runnerUp = cells[2].find(text = True)
+            runnerUp = cells[2].find('a')(text = True)[0] if cells[2].find('a') else cells[2].find(text = True)
             # Venue
-            if cells[3].find('a'):
-                venue = cells[3].find('a')(text = True)[0]
-            else:
-                venue = cells[3].find(text = True)
+            venue = cells[3].find('a')(text = True)[0] if cells[3].find('a') else cells[3].find(text = True)
             # Location
-            if cells[4].find('a'):
-                location = cells[4].find('a')(text = True)[0]
-            else:
-                location = cells[4].find(text = True)
+            location = cells[4].find('a')(text = True)[0] if cells[4].find('a') else cells[4].find(text = True)
             # Attendance
-            if cells[5].find('a'):
-                attendance = cells[5].find(text = True)
-            else:
-                attendance = cells[5].find(text = True)
-
+            attendance = cells[5].find('a')(text = True)[0] if cells[5].find('a') else cells[5].find(text = True)
+            # Save
             newMatch = Matches(currentYear, winner, finalScore, runnerUp, venue, location, attendance)
             matchesArray.append(newMatch)
-
-            currentYear += 4
-
             # The aftermath of World War II also caused the cancellation of the 1946 tournament.
+            currentYear += 4
             if currentYear == 1942:
                 currentYear = 1950
     return matchesArray
 
-def getJSON(matchesArray):
+def createJSON(matchesArray):
     fullJSON = []
     for i in matchesArray:
         fullJSON.append({
@@ -79,7 +59,7 @@ def getJSON(matchesArray):
 
 if __name__ == '__main__':
     matchesArray = getData()
-    jsonData = getJSON(matchesArray)
+    jsonData = createJSON(matchesArray)
     fullData = json.dumps(jsonData, ensure_ascii=False, encoding='utf8')
 
     # write json

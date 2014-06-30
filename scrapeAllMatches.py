@@ -29,54 +29,29 @@ def get2010PreData():
             if len(cells) == 5:
                 # Time
                 time = cells[0].find(text = True)
-                # Venue
-                venue = ''
                 # Stage
-                if cells[1].find('a'):
-                    stage = cells[1].find('a')(text = True)[0]
-                else:
-                    stage = cells[1].find(text = True)
-                currentStage = stage
+                currentStage = stage = cells[1].find('a')(text = True)[0] if cells[1].find('a') else cells[1].find(text = True)
                 # Team 1
-                if cells[2].find('a'):
-                    teamOne = cells[2].find('a')(text = True)[0]
-                else:
-                    teamOne = cells[2].find(text = True)
+                teamOne = cells[2].find('a')(text = True)[0] if cells[2].find('a') else cells[2].find(text = True)
                 # Result
-                if cells[3].find('a'):
-                    result = cells[3].find('a')(text = True)[0]
-                else:
-                    result = cells[3].find(text = True)
+                result = cells[3].find('a')(text = True)[0] if cells[3].find('a') else cells[3].find(text = True)
                 # Team 2
-                if cells[4].find('a'):
-                    teamTwo = cells[4].find('a')(text = True)[0]
-                else:
-                    teamTwo = cells[4].find(text = True)
-                newMatch = Matches(currentYear, time, venue, stage, teamOne, result, teamTwo)
+                teamTwo = cells[4].find('a')(text = True)[0] if cells[4].find('a') else cells[4].find(text = True)
+                # Save and Append
+                newMatch = Matches(currentYear, time, '', stage, teamOne, result, teamTwo)
                 matchesArray.append(newMatch)
             elif len(cells) == 4:
+                # When 4: Means that the stage is currently missing, so we have to import it from the last one
                 # Time
                 time = cells[0].find(text = True)
-                # Venue
-                venue = ''
                 # Team 1
-                if cells[1].find('a'):
-                    teamOne = cells[1].find('a')(text = True)[0]
-                else:
-                    teamOne = cells[1].find(text = True)
+                teamOne = cells[1].find('a')(text = True)[0] if cells[1].find('a') else cells[1].find(text = True)
                 # Result
-                if cells[2].find('a'):
-                    result = cells[2].find('a')(text = True)[0]
-                else:
-                    result = cells[2].find(text = True)
+                result = cells[2].find('a')(text = True)[0] if cells[2].find('a') else cells[2].find(text = True)
                 # Team 2
-                if cells[3].find('a'):
-                    teamTwo = cells[3].find('a')(text = True)[0]
-                else:
-                    teamTwo = cells[3].find(text = True)
-                # Stage
-                stage = currentStage
-                newMatch = Matches(currentYear, time, venue, stage, teamOne, result, teamTwo)
+                teamTwo = cells[3].find('a')(text = True)[0] if cells[3].find('a') else cells[3].find(text = True)
+                # Save
+                newMatch = Matches(currentYear, time, '', currentStage, teamOne, result, teamTwo)
                 matchesArray.append(newMatch)
         print "Year", currentYear, "Scraped"
         currentYear += 4
@@ -96,65 +71,37 @@ def get2010PostData():
                 # Time
                 time = cells[0].find(text = True)
                 # Venue
-                if cells[1].find('a'):
-                    venue = cells[1].find('a')(text = True)[0]
-                else:
-                    venue = cells[1].find(text = True)
+                venue = cells[1].find('a')(text = True)[0] if cells[1].find('a') else cells[1].find(text = True)
                 # Stage
-                if cells[2].find('a'):
-                    stage = cells[2].find('a')(text = True)[0]
-                else:
-                    stage = cells[2].find(text = True)
-                currentStage = stage
+                currentStage = stage = cells[2].find('a')(text = True)[0] if cells[2].find('a') else cells[2].find(text = True)
                 # Team 1
-                if cells[3].find('a'):
-                    teamOne = cells[3].find('a')(text = True)[0]
-                else:
-                    teamOne = cells[3].find(text = True)
+                teamOne = cells[3].find('a')(text = True)[0] if cells[3].find('a') else cells[3].find(text = True)
                 # Result
-                if cells[4].find('a'):
-                    result = cells[4].find('a')(text = True)[0]
-                else:
-                    result = cells[4].find(text = True)
+                result = cells[4].find('a')(text = True)[0] if cells[4].find('a') else cells[4].find(text = True)
                 # Team 2
-                if cells[5].find('a'):
-                    teamTwo = cells[5].find('a')(text = True)[0]
-                else:
-                    teamTwo = cells[5].find(text = True)
+                teamTwo = cells[5].find('a')(text = True)[0] if cells[5].find('a') else cells[5].find(text = True)
+                # Save
                 newMatch = Matches(currentYear, time, venue, stage, teamOne, result, teamTwo)
                 matchesArray.append(newMatch)
             elif len(cells) == 5:
                 # Time
                 time = cells[0].find(text = True)
                 # Venue
-                if cells[1].find('a'):
-                    venue = cells[1].find('a')(text = True)[0]
-                else:
-                    venue = cells[1].find(text = True)
+                venue = cells[1].find('a')(text = True)[0] if cells[1].find('a') else cells[1].find(text = True)
                 # Team 1
-                if cells[2].find('a'):
-                    teamOne = cells[2].find('a')(text = True)[0]
-                else:
-                    teamOne = cells[2].find(text = True)
+                teamOne = cells[2].find('a')(text = True)[0] if cells[2].find('a') else cells[2].find(text = True)
                 # Result
-                if cells[3].find('a'):
-                    result = cells[3].find('a')(text = True)[0]
-                else:
-                    result = cells[3].find(text = True)
+                result = cells[3].find('a')(text = True)[0] if cells[3].find('a') else cells[3].find(text = True)
                 # Team 2
-                if cells[4].find('a'):
-                    teamTwo = cells[4].find('a')(text = True)[0]
-                else:
-                    teamTwo = cells[4].find(text = True)
-                # Stage
-                stage = currentStage
-                newMatch = Matches(currentYear, time, venue, stage, teamOne, result, teamTwo)
+                teamTwo = cells[4].find('a')(text = True)[0] if cells[4].find('a') else cells[4].find(text = True)
+                # Save
+                newMatch = Matches(currentYear, time, venue, currentStage, teamOne, result, teamTwo)
                 matchesArray.append(newMatch)
         print "Year", currentYear, "Scraped"
         currentYear += 4
     return matchesArray
 
-def getJSON(matchesArray):
+def createJSON(matchesArray):
     fullJSON = []
     for i in matchesArray:
         fullJSON.append({
@@ -171,9 +118,10 @@ def getJSON(matchesArray):
 if __name__ == '__main__':
     matchesArray = get2010PreData()
     matchesArray += get2010PostData()
-    jsonData = getJSON(matchesArray)
+    # Prepare JSON data
+    jsonData = createJSON(matchesArray)
     fullData = json.dumps(jsonData, ensure_ascii=False, encoding='utf8')
-    # write json
+    # Write JSON data
     fd = open('./data/worldCupMatches.json', 'w')
     fd.write(fullData.encode('utf-8'))
     fd.close()

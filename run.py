@@ -11,7 +11,8 @@ class MyFileHandler(tornado.web.StaticFileHandler):
         super(MyFileHandler, self).get(self.filename, include_body)
 
 app = tornado.web.Application([
-    (r'/final\.json', MyFileHandler, {'path': './data/worldCupFinals.json'})
+    (r'/final\.json', MyFileHandler, {'path': './data/worldCupFinals.json'}),
+    (r'/winner\.json', MyFileHandler, {'path': './data/worldCupMatches.json'})
 ])
 
 app.listen(8888)
