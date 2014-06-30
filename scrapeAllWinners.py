@@ -83,6 +83,6 @@ if __name__ == '__main__':
     fullData = json.dumps(jsonData, ensure_ascii=False, encoding='utf8')
 
     # write json
-    fd = open('worldCupFinals.json', 'w')
+    fd = open('./data/worldCupFinals.json', 'w')
     fd.write(fullData.encode('utf-8'))
     fd.close()
