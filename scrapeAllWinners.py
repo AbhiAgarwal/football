@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import urllib2, json
+import urllib2, json, io
 
 url = "http://en.wikipedia.org/wiki/List_of_FIFA_World_Cup_finals"
 soup = BeautifulSoup(urllib2.urlopen(url).read())
@@ -81,4 +81,8 @@ if __name__ == '__main__':
     matchesArray = getData()
     jsonData = getJSON(matchesArray)
     fullData = json.dumps(jsonData, ensure_ascii=False, encoding='utf8')
-    print fullData
+
+    # write json
+    fd = open('worldCupFinals.json', 'w')
+    fd.write(fullData.encode('utf-8'))
+    fd.close()
