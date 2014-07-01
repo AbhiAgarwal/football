@@ -1,3 +1,6 @@
+# Mistakes in Data
+# 1930 Uruguay, 6-1, Yugoslavia in Semi-finals
+
 import json, unicodedata
 
 # Finds all games for a set of countries
@@ -29,10 +32,18 @@ def playedAgainst(matches, country):
 
 # Evaluation to see which country would win given a set of them
 def evaluate(year, matches, current):
+    # print len(matches['Germany']) + len(matches['West Germany']) + len(matches['East Germany'])
+    # print matches['East Germany']
+    # print matches['West Germany']
     # print findAllGamesForGroup(matches['Germany'], u'Sweden')
     # print findNumberOfMultipleGames(matches['Germany'])
     # print playedAgainst(matches['Germany'], u'United States')
-    print findAllGamesForGroup(matches['Brazil'], u'Colombia')
+    count = 0
+    for i in matches['Brazil']:
+        if i['Against'] == 'Yugoslavia':
+            count += 1
+    print "Brazil played", count, "Against Yugoslavia"
+    # print findAllGamesForGroup(matches['East Germany'], u'West Germany')
     pass
 
 if __name__ == '__main__':
