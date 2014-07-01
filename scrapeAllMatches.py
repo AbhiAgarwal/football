@@ -15,6 +15,16 @@ class Matches:
     def printString(self):
         print self.year, self.time, self.venue, self.stage, self.teamOne, self.result, self.teamTwo
 
+def get1930PostData():
+    matchesARray = []
+    url = "http://en.wikipedia.org/wiki/%s_FIFA_World_Cup"
+    currentYear = 1930
+    limitYear = 1990
+    while currentYear != limitYear:
+
+        print "Year", currentYear, "Scraped"
+        currentYear += 4
+
 # From 1990 -> 2006 the tables are different
 def get2010PreData():
     matchesArray = []

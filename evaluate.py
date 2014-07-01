@@ -31,7 +31,8 @@ def playedAgainst(matches, country):
 def evaluate(year, matches, current):
     # print findAllGamesForGroup(matches['Germany'], u'Sweden')
     # print findNumberOfMultipleGames(matches['Germany'])
-    print playedAgainst(matches['Germany'], u'United States')
+    # print playedAgainst(matches['Germany'], u'United States')
+    print findAllGamesForGroup(matches['Brazil'], u'Colombia')
     pass
 
 if __name__ == '__main__':
