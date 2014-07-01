@@ -3,6 +3,7 @@ import urllib2, json, sys, string, re
 
 url = "http://en.wikipedia.org/wiki/%s_FIFA_World_Cup"
 currentYear = 1930
+endingYear = 1990
 soup = BeautifulSoup(urllib2.urlopen(url % str(currentYear)).read())
 for row in soup.findAll('div', {"class" : "vevent"}):
     status = 1

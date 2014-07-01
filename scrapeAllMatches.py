@@ -1,7 +1,5 @@
 from bs4 import BeautifulSoup
-import urllib2, json
-
-futureYear = 2014 + 4
+import urllib2, json, sys, string, re
 
 class Matches:
     def __init__(self, year, time, venue, stage, teamOne, result, teamTwo):
@@ -16,14 +14,54 @@ class Matches:
         print self.year, self.time, self.venue, self.stage, self.teamOne, self.result, self.teamTwo
 
 def get1930PostData():
-    matchesARray = []
+    matchesArray = []
     url = "http://en.wikipedia.org/wiki/%s_FIFA_World_Cup"
     currentYear = 1930
     limitYear = 1990
     while currentYear != limitYear:
-
+        soup = BeautifulSoup(urllib2.urlopen(url % str(currentYear)).read())
+        for row in soup.findAll('div', {"class" : "vevent"}):
+            status = 1
+            time, teamOne, result, teamTwo = '', '', '', ''
+            for i in row.findAll('table'):
+                if status == 1:
+                    tr = i.findAll('tr')
+                    td = tr[0].findAll('td')
+                    div = td[0].findAll('div')
+                    time = div[0].find(text = True)
+                    status += 1
+                elif status == 2:
+                    tr = i.findAll('tr')
+                    th = tr[0].findAll('th')
+                    currentI = 1
+                    for i in th:
+                        if currentI == 1:
+                            teamOne = i.find('a')(text = True)[0] if i.find('a') else i.find(text = True)
+                            currentI += 1
+                        elif currentI == 2:
+                            bad_chars = '(){}<>'
+                            result = i.find(text = True)
+                            rgx = re.compile('[%s]' % bad_chars)
+                            result = rgx.sub('', result)
+                            currentI += 1
+                        elif currentI == 3:
+                            teamTwo = i.find('a')(text = True) if i.find('a') else i.find(text = True)
+                            if len(teamTwo) is 1:
+                                teamTwo = teamTwo[0]
+                            else:
+                                teamTwo = 'Not Found'
+                else:
+                    tr = i.findAll('tr')
+                    td = tr[0].findAll('td')
+                    div = td[0].findAll('div')
+                    text = div[0].find(text = True)
+                    status = 1
+            # Save
+            newMatch = Matches(currentYear, time, '', '', teamOne, result, teamTwo)
+            matchesArray.append(newMatch)
         print "Year", currentYear, "Scraped"
         currentYear += 4
+    return matchesArray
 
 # From 1990 -> 2006 the tables are different
 def get2010PreData():
@@ -72,6 +110,7 @@ def get2010PostData():
     matchesArray = []
     url = "http://en.wikipedia.org/wiki/List_of_%s_FIFA_World_Cup_matches"
     currentYear = 2010
+    futureYear = 2018
     while currentYear != futureYear:
         soup = BeautifulSoup(urllib2.urlopen(url % str(currentYear)).read())
         currentStage = ""
@@ -126,7 +165,8 @@ def createJSON(matchesArray):
     return fullJSON
 
 if __name__ == '__main__':
-    matchesArray = get2010PreData()
+    matchesArray = get1930PostData()
+    matchesArray += get2010PreData()
     matchesArray += get2010PostData()
     # Prepare JSON data
     jsonData = createJSON(matchesArray)
