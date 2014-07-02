@@ -1,7 +1,7 @@
 # Mistakes in Data
 # 1930 Uruguay, 6-1, Yugoslavia in Semi-finals
 
-import json, unicodedata
+import json, unicodedata, operator
 
 # Finds all games for a set of countries
 def findAllGamesForGroup(matches, country):
@@ -46,6 +46,7 @@ def evaluate(year, matches, current):
     '''
 
     # When accounting for Germany we have to look at West Germany and East Germany.
+    '''
     countGames = 0
     matchFrom, matchAgainst = 'West Germany', 'Colombia'
     for i in matches[matchFrom]:
@@ -61,6 +62,33 @@ def evaluate(year, matches, current):
             else:
                 print matchAgainst, 'won', i['Result'], 'in', i['Year']
     print matchFrom, "played", countGames, "matches Against", matchAgainst
+    '''
+
+    # print "There are", len(matches), "teams in the world cup"
+
+    # Finding the most played games between teams
+    '''
+    thelargestOccurance = 0
+    thelargestAgainst = []
+    thelargestTeam = ''
+    for i in matches:
+        numberOfOccurances = {}
+        for x in matches[i]:
+            if x['Against'] in numberOfOccurances:
+                numberOfOccurances[x['Against']] += 1
+            else:
+                numberOfOccurances[x['Against']] = 1
+        largestOccurance = max(numberOfOccurances.iteritems(), key=operator.itemgetter(1))[0]
+        currentLargest = 0
+        for g in matches[i]:
+            if g['Against'] == largestOccurance:
+                currentLargest += 1
+        if thelargestOccurance < currentLargest:
+            thelargestTeam = i
+            thelargestAgainst = largestOccurance
+            thelargestOccurance = currentLargest
+    print 'The most number of games were', thelargestOccurance, 'between', thelargestTeam, 'and', thelargestAgainst
+    '''
 
 if __name__ == '__main__':
     # yearWinner -> Dictionary for winner of each year
