@@ -2,6 +2,7 @@
 # 1930 Uruguay, 6-1, Yugoslavia in Semi-finals
 
 import json, unicodedata, operator
+# from pandas import DataFrame
 
 # Finds all games for a set of countries
 def findAllGamesForGroup(matches, country):
@@ -46,9 +47,10 @@ def evaluate(year, matches, current):
     '''
 
     # When accounting for Germany we have to look at West Germany and East Germany.
+
     '''
     countGames = 0
-    matchFrom, matchAgainst = 'West Germany', 'Colombia'
+    matchFrom, matchAgainst = 'France', 'Germany'
     for i in matches[matchFrom]:
         if i['Against'] == matchAgainst:
             countGames += 1
@@ -89,6 +91,10 @@ def evaluate(year, matches, current):
             thelargestOccurance = currentLargest
     print 'The most number of games were', thelargestOccurance, 'between', thelargestTeam, 'and', thelargestAgainst
     '''
+
+    # Using Pandas to show the data
+    # df = DataFrame(data = matches['Germany'], columns=['Against', 'Result', 'Year'])
+    # print df
 
 if __name__ == '__main__':
     # yearWinner -> Dictionary for winner of each year
