@@ -32,19 +32,35 @@ def playedAgainst(matches, country):
 
 # Evaluation to see which country would win given a set of them
 def evaluate(year, matches, current):
-    # print len(matches['Germany']) + len(matches['West Germany']) + len(matches['East Germany'])
-    # print matches['East Germany']
-    # print matches['West Germany']
-    # print findAllGamesForGroup(matches['Germany'], u'Sweden')
-    # print findNumberOfMultipleGames(matches['Germany'])
-    # print playedAgainst(matches['Germany'], u'United States')
-    count = 0
-    for i in matches['Brazil']:
-        if i['Against'] == 'Yugoslavia':
-            count += 1
-    print "Brazil played", count, "Against Yugoslavia"
-    # print findAllGamesForGroup(matches['East Germany'], u'West Germany')
-    pass
+
+    '''
+    Sample Queries
+
+    print len(matches['Germany']) + len(matches['West Germany']) + len(matches['East Germany'])
+    print matches['East Germany']
+    print matches['West Germany']
+    print findAllGamesForGroup(matches['Germany'], u'Sweden')
+    print findNumberOfMultipleGames(matches['Germany'])
+    print playedAgainst(matches['Germany'], u'United States')
+    print findAllGamesForGroup(matches['East Germany'], u'West Germany')
+    '''
+
+    # When accounting for Germany we have to look at West Germany and East Germany.
+    countGames = 0
+    matchFrom, matchAgainst = 'West Germany', 'Colombia'
+    for i in matches[matchFrom]:
+        if i['Against'] == matchAgainst:
+            countGames += 1
+            score = list(i['Result'])
+            # The last score, and the first score
+            # in the middle there is going to be random stuff
+            if score[0] == score[-1]:
+                print matchFrom, 'drew', i['Result'], 'in', i['Year']
+            elif score[0] > score[-1]:
+                print matchFrom, 'won', i['Result'], 'in', i['Year']
+            else:
+                print matchAgainst, 'won', i['Result'], 'in', i['Year']
+    print matchFrom, "played", countGames, "matches Against", matchAgainst
 
 if __name__ == '__main__':
     # yearWinner -> Dictionary for winner of each year
